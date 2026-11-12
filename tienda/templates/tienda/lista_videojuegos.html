@@ -1,0 +1,59 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Catálogo de Videojuegos</h2>
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="buscar" class="form-control" placeholder="Buscar por título..." value="{{ request.GET.buscar }}">
+        </div>
+        <div class="col-md-4">
+            <select name="plataforma" class="form-select">
+                <option value="">Todas las plataformas</option>
+                {% for p in plataformas %}
+                    <option value="{{ p }}" {% if request.GET.plataforma == p %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+{% if user.is_staff %}
+    <a href="{% url 'crear_videojuego' %}" class="btn btn-success">+ Nuevo Videojuego</a>
+{% endif %}
+</div>
+
+<div class="row">
+    {% for juego in videojuegos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if juego.imagen %}
+                <img src="{{ juego.imagen.url }}" class="card-img-top" alt="{{ juego.titulo }}" style="height: 250px; object-fit: cover;">
+            {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                    Sin Imagen
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ juego.titulo }}</h5>
+                <p class="card-text text-muted mb-1">{{ juego.plataforma }} | {{ juego.genero }}</p>
+                <h6 class="text-success">${{ juego.precio }}</h6>
+                <p class="card-text small">Stock: {{ juego.stock }}</p>
+            </div>
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                <a href="{% url 'detalle_videojuego' juego.pk %}" class="btn btn-sm btn-primary">Ver</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'editar_videojuego' juego.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'borrar_videojuego' juego.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No hay videojuegos registrados aún.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

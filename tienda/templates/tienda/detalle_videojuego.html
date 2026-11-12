@@ -1,0 +1,27 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="row g-0">
+        <div class="col-md-4">
+            {% if videojuego.imagen %}
+                <img src="{{ videojuego.imagen.url }}" class="img-fluid rounded-start" alt="{{ videojuego.titulo }}">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h2 class="card-title">{{ videojuego.titulo }}</h2>
+                <p class="text-muted">{{ videojuego.plataforma }} | {{ videojuego.genero }} | {{ videojuego.desarrolladora }}</p>
+                <h4 class="text-success">${{ videojuego.precio }}</h4>
+                <p><strong>Stock:</strong> {{ videojuego.stock }}</p>
+                <p><strong>Lanzamiento:</strong> {{ videojuego.fecha_lanzamiento|default:"No especificado" }}</p>
+                <p>{{ videojuego.descripcion }}</p>
+                <div class="mt-4">
+                    <a href="{% url 'lista_videojuegos' %}" class="btn btn-secondary">Volver</a>
+                    <a href="{% url 'editar_videojuego' videojuego.pk %}" class="btn btn-warning">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
