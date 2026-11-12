@@ -1,0 +1,19 @@
+# Entorno
+.env
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+db.sqlite3
+
+# Archivos multimedia subidos por el usuario
+media/
+
+# IDE
+.vscode/
+.idea/
